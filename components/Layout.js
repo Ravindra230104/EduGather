@@ -1,4 +1,4 @@
-// import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 // import Head from 'next/head';
 // import Link from 'next/link';
 // import { isAuth, logout } from '../helpers/auth';
@@ -124,13 +124,13 @@ const Layout = ({ children }) => {
     const nav = () => (
         <ul className="nav nav-tabs bg-warning">
             <li className="nav-item">
-                <Link href="/">
+                <Link href="/" legacyBehavior>
                     <a className="nav-link text-dark">Home</a>
                 </Link>
             </li>
 
             <li className="nav-item">
-                <Link href="/user/link/create">
+                <Link href="/user/link/create" legacyBehavior>
                     <a className="nav-link text-dark btn btn-success" style={{ borderRadius: '0px' }}>
                         Submit a link
                     </a>
@@ -140,12 +140,12 @@ const Layout = ({ children }) => {
             {!isAuth() && (
                 <React.Fragment>
                     <li className="nav-item">
-                        <Link href="/login">
+                        <Link href="/login" legacyBehavior>
                             <a className="nav-link text-dark">Login</a>
                         </Link>
                     </li>
                     <li className="nav-item">
-                        <Link href="/register">
+                        <Link href="/register" legacyBehavior>
                             <a className="nav-link text-dark">Register</a>
                         </Link>
                     </li>
@@ -154,7 +154,7 @@ const Layout = ({ children }) => {
 
             {isAuth() && isAuth().role === 'admin' && (
                 <li className="nav-item ml-auto">
-                    <Link href="/admin">
+                    <Link href="/admin" legacyBehavior>
                         <a className="nav-link text-dark">{isAuth().name}</a>
                     </Link>
                 </li>
@@ -162,7 +162,7 @@ const Layout = ({ children }) => {
 
             {isAuth() && isAuth().role === 'subscriber' && (
                 <li className="nav-item ml-auto">
-                    <Link href="/user">
+                    <Link href="/user" legacyBehavior>
                         <a className="nav-link text-dark">{isAuth().name}</a>
                     </Link>
                 </li>
