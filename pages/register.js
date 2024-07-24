@@ -126,7 +126,7 @@ const Register = () => {
             </div>
             <div className="form-group mb-4">
                 <label className='text-light'>Choose your favourite Category</label>
-                <ul style={{ maxHeight: '200px', overflowY: 'scroll', paddingLeft: '0' }}>
+                <ul style={{ maxHeight: '230px', overflowY: 'scroll', paddingLeft: '0' }}>
                     {showCategories()}
                 </ul>
             </div>
