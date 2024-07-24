@@ -1,10 +1,10 @@
 import Layout from '../components/Layout';
-import { useState,useEffect } from 'react';
-import Router from 'next/router'
+import { useState, useEffect } from 'react';
+import Router from 'next/router';
 import axios from 'axios';
-import {showSuccessMessage,showErrorMessage} from '../helpers/alerts'
-import {API} from '../config'
-import {authenticate, isAuth} from '../helpers/auth'
+import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
+import { API } from '../config';
+import { authenticate, isAuth } from '../helpers/auth';
 
 const Register = () => {
     const [state, setState] = useState({
@@ -14,16 +14,15 @@ const Register = () => {
         error: '',
         success: '',
         buttonText: 'Register',
-        loadedCategories:[],
-        categories:[]
+        loadedCategories: [],
+        categories: []
     });
 
     useEffect(() => {
         isAuth() && Router.push('/');
-    },[]);
+    }, []);
 
     const { name, email, password, error, success, buttonText, loadedCategories, categories } = state;
-
 
     useEffect(() => {
         loadCategories();
@@ -33,24 +32,29 @@ const Register = () => {
         try {
             const response = await axios.get(`${API}/categories`);
             setState({ ...state, loadedCategories: response.data });
+            console.log("Loaded Categories:", response.data); // Debugging
         } catch (err) {
             console.error('Error loading categories:', err);
         }
     };
 
-    const handleToggle = c => () => {
-        const clickedCategory = categories.indexOf(c);
-        const all = [...categories];
+    const handleToggle = c => {
+        return () => {
+            const clickedCategory = categories.indexOf(c);
+            const all = [...categories];
 
-        if (clickedCategory === -1) {
-            all.push(c);
-        } else {
-            all.splice(clickedCategory, 1);
+            if (clickedCategory === -1) {
+                all.push(c);
+            } else {
+                all.splice(clickedCategory, 1);
+            }
+            setState({ ...state, categories: all, success: '', error: '' });
+            console.log("Selected Categories:", all); // Debugging
         }
-        setState({ ...state, categories: all, success: '', error: '' });
     };
 
     const showCategories = () => {
+        console.log("Rendering Categories:", loadedCategories); // Debugging
         return loadedCategories && loadedCategories.map((c, i) => (
             <li className='list-unstyled mb-2' key={c._id}>
                 <input type="checkbox" onChange={handleToggle(c._id)} className="form-check-input" style={{ marginRight: '10px' }} />
@@ -59,60 +63,34 @@ const Register = () => {
         ));
     };
 
- 
     const handleChange = (name) => (e) => {
         setState({ ...state, [name]: e.target.value, error: '', success: '', buttonText: 'Register' });
     };
 
-    const handleSubmit = async (e) =>{
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setState({...state,buttonText:'Registering'});
-        try{
+        setState({ ...state, buttonText: 'Registering' });
+        try {
             const response = await axios.post(`${API}/register`, {
                 name,
                 email,
                 password,
                 categories
-            })
+            });
             console.log(response);
             setState({
                 ...state,
-                name:'',
-                email:'',
-                password:'',
-                buttonText:'Submitted',
-                success:response.data.message
+                name: '',
+                email: '',
+                password: '',
+                buttonText: 'Submitted',
+                success: response.data.message
             });
-        }catch(error){
+        } catch (error) {
             console.log(error);
-            setState({...state,buttonText:'Register',error:error.response.data.message})
+            setState({ ...state, buttonText: 'Register', error: error.response.data.message });
         }
-
-    }
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault();
-    //     // console.table({name,email,password});
-    //     axios
-    //         .post(`http://localhost:8000/api/register`, {
-    //             name,
-    //             email,
-    //             password,
-    //         })
-    //         .then((response) => {
-    //             setState({
-    //                 ...state,
-    //                 name:'',
-    //                 email:'',
-    //                 password:'',
-    //                 buttonText:'Submitted',
-    //                 success:response.data.message
-    //             })
-    //         })
-    //         .catch((error) => {
-    //             setState({...state,buttonText:'Register',error:error.response.data.error})
-    //         });
-    // };
+    };
 
     const registerForm = () => (
         <form onSubmit={handleSubmit}>
@@ -147,11 +125,11 @@ const Register = () => {
                 />
             </div>
             <div className="form-group mb-4">
-                 <label className='text-light'>Choose your favourite Category</label>
-                    <ul style={{ maxHeight: '100px', overflowY: 'scroll', paddingLeft: '0' }}>
-                        {showCategories()}
-                    </ul>
-             </div>
+                <label className='text-light'>Choose your favourite Category</label>
+                <ul style={{ maxHeight: '200px', overflowY: 'scroll', paddingLeft: '0' }}>
+                    {showCategories()}
+                </ul>
+            </div>
             <div className="form-group mb-3">
                 <button className="btn btn-outline-warning w-100">{buttonText}</button>
             </div>
@@ -166,7 +144,7 @@ const Register = () => {
                         <div className="card p-4" style={{ backgroundColor: 'black', border: '1px solid #dee2e6' }}>
                             <h1 className="text-center mb-4 text-white">Register</h1>
                             {success && showSuccessMessage(success)}
-                            {error && showSuccessMessage(error)}
+                            {error && showErrorMessage(error)}
                             {registerForm()}
                         </div>
                     </div>
