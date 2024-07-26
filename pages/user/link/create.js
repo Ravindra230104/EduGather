@@ -111,45 +111,28 @@ const Create = ({ token }) => {
             </li>
         ));
     };
- 
 
     const submitLinkForm = () => (
-        <form onSubmit={handleSubmit} className='p-4 border rounded bg-black text-white shadow-sm'>
+        <form onSubmit={handleSubmit} className='p-4 border rounded bg-dark text-white shadow-sm'>
             <div className="form-group mb-3">
                 <label className="text-white">Title</label>
                 <input
                     type="text"
-                    className='form-control bg-dark text-white placeholder-white'
+                    className='form-control   '
                     onChange={handleTitleChange}
                     value={title}
                     placeholder='Enter title'
-                    style={{ 
-                        '--placeholder-color': 'white', // Custom property for placeholder color
-                    }}
                 />
-                <style jsx>{`
-                    .form-control::placeholder {
-                        color: var(--placeholder-color);
-                    }
-                `}</style>
             </div>
             <div className="form-group mb-3">
                 <label className="text-white">URL</label>
                 <input
                     type="url"
-                    className='form-control bg-dark text-white placeholder-white'
+                    className='form-control  '
                     onChange={handleURLChange}
                     value={url}
                     placeholder='Enter URL'
-                    style={{ 
-                        '--placeholder-color': 'white', // Custom property for placeholder color
-                    }}
                 />
-                <style jsx>{`
-                    .form-control::placeholder {
-                        color: var(--placeholder-color);
-                    }
-                `}</style>
             </div>
             <button disabled={!token} className="btn btn-primary" type="submit">
                 {isAuth() || token ? 'Post' : 'Login to post'}
@@ -157,14 +140,12 @@ const Create = ({ token }) => {
         </form>
     );
     
-    
-    
     return (
         <Layout>
             <div className="container mt-4">
                 <div className="row mb-4">
                     <div className="col-md-12">
-                        <h1 className="display-4" style={{fontWeight:'bold'}}>Submit Link/URL</h1>
+                        <h1 className="display-4" style={{ fontWeight: 'bold' }}>Submit Link/URL</h1>
                     </div>
                 </div>
                 <div className="row">

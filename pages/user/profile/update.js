@@ -121,7 +121,7 @@ const Profile = ({ user, token }) => {
             </div>
             <div className="form-group mb-4">
                 <label className='text-light'>Choose your favourite Category</label>
-                <ul style={{ maxHeight: '100px', overflowY: 'scroll', paddingLeft: '0' }}>
+                <ul style={{ maxHeight: '130px', overflowY: 'scroll', paddingLeft: '0' }}>
                     {showCategories()}
                 </ul>
             </div>
