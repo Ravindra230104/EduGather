@@ -38,7 +38,7 @@ const Register = () => {
         }
     };
 
-    const handleToggle = c => {
+    const handleToggle = (c) => {
         return () => {
             const clickedCategory = categories.indexOf(c);
             const all = [...categories];
@@ -50,17 +50,28 @@ const Register = () => {
             }
             setState({ ...state, categories: all, success: '', error: '' });
             console.log("Selected Categories:", all); // Debugging
-        }
+        };
     };
 
     const showCategories = () => {
-        console.log("Rendering Categories:", loadedCategories); // Debugging
-        return loadedCategories && loadedCategories.map((c, i) => (
-            <li className='list-unstyled mb-2' key={c._id}>
-                <input type="checkbox" onChange={handleToggle(c._id)} className="form-check-input" style={{ marginRight: '10px' }} />
-                <label className="form-check-label text-white" style={{ marginLeft: '5px' }}>{c.name}</label>
-            </li>
-        ));
+        return loadedCategories && loadedCategories.length > 0 ? (
+            <div className="form-check">
+                {loadedCategories.map((c) => (
+                    <div key={c._id} className="category-item">
+                        <input
+                            type="checkbox"
+                            onChange={handleToggle(c._id)}
+                            id={`category-${c._id}`}
+                            className="form-check-input"
+                            checked={categories.includes(c._id)}
+                        />
+                        <label htmlFor={`category-${c._id}`} className="form-check-label">{c.name}</label>
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <p>No categories available</p>
+        );
     };
 
     const handleChange = (name) => (e) => {
@@ -125,7 +136,7 @@ const Register = () => {
                 />
             </div>
             <div className="form-group mb-4">
-                <label className='text-light'>Choose your favourite Category</label>
+                <label className='text-dark'>Choose your favourite Category</label>
                 <ul style={{ maxHeight: '230px', overflowY: 'scroll', paddingLeft: '0' }}>
                     {showCategories()}
                 </ul>
@@ -141,8 +152,8 @@ const Register = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                        <div className="card p-4" style={{ backgroundColor: 'black', border: '1px solid #dee2e6' }}>
-                            <h1 className="text-center mb-4 text-white">Register</h1>
+                        <div className="card p-4" style={{ backgroundColor: 'white', border: '1px solid #dee2e6' }}>
+                            <h1 className="text-center mb-4 text-black">Register</h1>
                             {success && showSuccessMessage(success)}
                             {error && showErrorMessage(error)}
                             {registerForm()}

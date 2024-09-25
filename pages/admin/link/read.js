@@ -50,41 +50,32 @@ const Links = ({ token, links, totalLinks, linksLimit, linkSkip }) => {
 
     const listOfLinks = () =>
         allLinks.map((l, i) => (
-            <div key={i} className="row alert alert-primary p-2">
+            <div key={i} className="row mb-4 p-3 border rounded shadow-sm" style={{ background: 'linear-gradient(to right, #360033, #0b8793)' }}>
                 <div className="col-md-8" onClick={() => handleClick(l._id)}>
-                    <a href={l.url} target="_blank" style={{textDecoration: 'none'}}>
-                        <h5 className="pt-2">{l.title}</h5>
-                        <h6 className="pt-2 text-danger" style={{ fontSize: '14px' }}>
-                            {l.url}
-                        </h6>
+                    <a href={l.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                        <h5 className="pt-2 font-weight-bold text-primary">{l.title}</h5>
+                        <p className="text-white small">{l.url}</p>
                     </a>
                 </div>
-                <div className="col-md-4 pt-2">
-                    <span className="pull-right">
-                        {moment(l.createdAt).fromNow()} by {l.postedBy.name}
-                    </span>
+                <div className="col-md-4 text-end">
+                    <span className="text-white small">{moment(l.createdAt).fromNow()} by {l.postedBy.name}</span>
                     <br />
-                    <span className="badge text-secondary pull-right">{l.clicks} clicks</span>
+                    <span className="badge bg-info text-dark">{l.clicks} clicks</span>
                 </div>
-                <div className="col-md-12">
-                    <span className="badge bg-light text-dark me-2">
-                        {l.type}
-                    </span>
-                    <span className="badge bg-light text-dark me-2">
-                          {l.medium}
-                    </span>
+                <div className="d-flex align-items-center mt-2">
+                    <span className="badge bg-secondary" style={{ marginRight: '10px' }}>{l.type}</span>
+                    <span className="badge bg-secondary" style={{ marginRight: '10px' }}>{l.medium}</span>
                     {l.categories.map((c, i) => (
-                        <span key={i} className="badge bg-success text-white me-2">
-                            {c.name}
-                        </span>
+                        <span key={i} className="badge bg-success" style={{ marginRight: '10px' }}>{c.name}</span>
                     ))}
                     <Link legacyBehavior href={`/user/link/${l.slug}`}>
-                        <span onClick={(e) => confirmDelete(e, l._id)} className='badge bg-danger text-white me-2'>Delete</span>
+                        <span onClick={(e) => confirmDelete(e, l._id)} className='badge bg-danger' style={{ cursor: 'pointer', marginRight: '10px' }}>Delete</span>
                     </Link>
                     <Link legacyBehavior href={`/user/link/${l.slug}`}>
-                        <span className='badge bg-warning text-dark me-2'>Update</span>
-                    </Link> 
+                        <span className='badge bg-warning text-dark' style={{ cursor: 'pointer' }}>Update</span>
+                    </Link>
                 </div>
+
             </div>
         ));
 
@@ -120,7 +111,7 @@ const Links = ({ token, links, totalLinks, linksLimit, linkSkip }) => {
         <Layout>
             <div className="row">
                 <div className="col-md-12">
-                    <h1 className="display-4 font-weight-bold">All Links</h1>
+                    <h1 className="display-4 font-weight-bold text-white">All Links</h1>
                 </div>
             </div>
             <hr />

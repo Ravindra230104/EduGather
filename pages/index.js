@@ -1,110 +1,156 @@
-import Layout from '../components/Layout';
-import axios from 'axios';
-import { API } from '../config';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import moment from 'moment';
+import Image from 'next/image';
+import { Container } from 'react-bootstrap';
+import Counter from './Counter'; // Adjust the import path as needed
 
-const Home = ({ categories }) => {
-    const [popular, setPopular] = useState([]);
+const HomePage = () => {
+    return (
+        <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', margin: 0 }}>
+            {/* Navbar */}
+            <div style={{ 
+                background: 'linear-gradient(to right, #6441a5, #004e92)',   
+                padding: '0.5rem 1rem', 
+                flexShrink: 0 
+            }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Link href="/" passHref legacyBehavior>
+                        <a style={{ display: 'block' }}>
+                            <Image
+                                src="/static/images/img1.png"
+                                alt="Logo"
+                                width={60}
+                                height={60}
+                                style={{ display: 'block' }}
+                            />
+                        </a>
+                    </Link>
 
-    useEffect(() => {
-        loadPopular();
-    }, []);
-
-    const loadPopular = async () => {
-        try {
-            const response = await axios.get(`${API}/link/popular`);
-            setPopular(response.data);
-        } catch (err) {
-            console.error('Error loading popular links:', err);
-        }
-    };
-
-    const handleClick = async linkId => {
-        try {
-            await axios.put(`${API}/click-count`, { linkId });
-            loadPopular();
-        } catch (error) {
-            console.error('Error updating click count:', error);
-        }
-    };
-
-    const listOfLinks = () => (
-        popular.map((l, i) => (
-            <div key={i} className="row alert alert-primary mb-4 p-3 border rounded shadow-sm">
-                <div className="col-md-8" onClick={() => handleClick(l._id)}>
-                    <a href={l.url} target="_blank" rel="noopener noreferrer" style={{ color: 'red', textDecoration: 'none' }}>
-                        <h5 className="pt-2 font-weight-bold" style={{ color: 'blue' }}>{l.title}</h5>
-                        <h6 className="pt-2" style={{ fontSize: '14px' }}>{l.url}</h6>
-                    </a>
-                </div>
-                <div className="col-md-4 pt-2">
-                    <span className="text-muted">{moment(l.createdAt).fromNow()} by {l.postedBy.name}</span>
-                    <br />
-                    <span className="badge text-secondary pull-right">{l.clicks} clicks</span>
-                </div>
-                <div className="col-md-12 mt-2">
-                    <span className="badge bg-light text-dark me-2">{l.type}</span>
-                    <span className="badge bg-light text-dark me-2">{l.medium}</span>
-                    {l.categories.map((c, i) => (
-                        <span key={i} className="badge bg-success text-white me-2">{c.name}</span>
-                    ))}
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                        <Link href="/Home" passHref legacyBehavior>
+                            <a style={{ color: '#fff', margin: '0 1rem', textDecoration: 'none' }}>Home</a>
+                        </Link>
+                        <Link href="/" passHref legacyBehavior>
+                            <a style={{ color: '#fff', margin: '0 1rem', textDecoration: 'none' }}>About</a>
+                        </Link>
+                        <Link href="/" passHref legacyBehavior>
+                            <a style={{ color: '#fff', margin: '0 1rem', textDecoration: 'none' }}>Contact</a>
+                        </Link>
+                    </div>
                 </div>
             </div>
-        ))
-    );
 
-    const listCategories = () => (
-        categories.map((c, i) => (
-            <Link href={`/links/${c.slug}`} key={i} legacyBehavior>
-                <a className="bg-light p-3 col-md-4" style={{ border: '1px solid red', display: 'block' }}>
-                    <div>
-                        <div className='row'>
-                            <div className='col-md-4'>
-                                <img src={c.image && c.image.url} alt={c.name} style={{ width: '100px', height: 'auto' }} className='pr-3' />
+            {/* Main content */}
+            <div style={{ 
+                display: 'flex', 
+                flex: '1', 
+                padding: '2rem', 
+                overflow: 'auto',  
+                paddingBottom: '10rem',
+                background: 'linear-gradient(to right, #000428, #004e92)'
+            }}>
+                <div style={{ flex: '1', textAlign: 'center' }}>
+                    <Image
+                        src="/static/images/study.jpeg"
+                        alt="Education"
+                        width={600}
+                        height={400}
+                        style={{ borderRadius: '0.5rem', objectFit: 'cover' }}
+                    />
+                </div>
+
+                <div style={{ flex: '1', paddingLeft: '2rem' }}>
+                    <h1 style={{ fontSize: '2rem', fontWeight: '700', color: 'red', marginBottom: '1rem' }}>
+                        Learn. Share. Grow.
+                    </h1>
+                    <p style={{ fontSize: '1rem' , color:'white'}}>
+                        Welcome to EduGather, your go-to platform for sharing and learning educational content.
+                        Whether you're preparing for interviews or want to sharpen your skills, we've got the resources for you.
+                    </p>
+                    <p style={{ fontSize: '1rem' , color:'white'}}>
+                        EduGather offers categorized tutorials, online courses, and more to help you enhance your knowledge in programming, web development, and beyond.
+                    </p>
+                    <Link href="/Home" passHref legacyBehavior>
+                        <a style={{ display: 'inline-block', padding: '0.75rem 1.5rem', fontSize: '1rem', borderRadius: '0.3rem', backgroundColor: '#007bff', color: '#fff', textDecoration: 'none' }}>
+                            Explore Now
+                        </a>
+                    </Link>
+
+                    {/* Stats Section */}
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        marginTop: '2rem',
+                        gap: '1rem',
+                    }}>
+                        <div style={{
+                            flex: 1,
+                            border: '2px solid #007bff',
+                            borderRadius: '0.5rem',
+                            padding: '1rem',
+                            textAlign: 'center',
+                            background: 'linear-gradient(to right, #ff7e5f, #feb47b)',
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                        }}>
+                            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Links Uploaded</h2>
+                            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#007bff' }}>
+                                <Counter target={420} duration={2000} />
                             </div>
-                            <div className='col-md-8'>
-                                <h3 style={{ margin: 0 }}>{c.name}</h3>
+                        </div>
+                        <div style={{
+                            flex: 1,
+                            border: '2px solid #007bff',
+                            borderRadius: '0.5rem',
+                            padding: '1rem',
+                            textAlign: 'center',
+                            background: 'linear-gradient(to right, #ff7e5f, #feb47b)',
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                        }}>
+                            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Categories Present</h2>
+                            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#007bff' }}>
+                                <Counter target={45} duration={2000} />
+                            </div>
+                        </div>
+                        <div style={{
+                            flex: 1,
+                            border: '2px solid #007bff',
+                            borderRadius: '0.5rem',
+                            padding: '1rem',
+                            textAlign: 'center',
+                           background: 'linear-gradient(to right, #ff7e5f, #feb47b)',
+                            boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+                        }}>
+                            <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>Users</h2>
+                            <div style={{ fontSize: '1.6rem', fontWeight: 'bold', color: '#007bff' }}>
+                                <Counter target={2500} duration={2000} />
                             </div>
                         </div>
                     </div>
-                </a>
-            </Link>
-        ))
-    );
-
-    return (
-        <Layout>
-            <div className="row">
-                <div className="col-md-8">
-                    <h1 className="font-weight-bold">Browse Tutorials/Courses</h1>
-                    <br />
                 </div>
             </div>
-            <div className="row">
-                {listCategories()}
-            </div>
-            <div className="row pt-5">
-                <h2 className="font-weight-bold pb-3">Trending {popular.length}</h2>
-                <div className="col-md-12 overflow-hidden">{listOfLinks()}</div>
-            </div>
-        </Layout>
+
+            {/* Footer */}
+            <footer style={{
+                background: 'linear-gradient(to right, #6441a5, #004e92)',
+                marginTop: 'auto',
+                padding: '1rem 0'
+            }}>
+                <Container>
+                    <div className="text-center" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '50px'
+                    }}>
+                        <hr style={{ borderColor: '#495057', width: '80%', margin: '0 auto 0.5rem auto' }} />
+                        <p style={{ marginBottom: '0', fontSize: '1rem', color: '#fff' }}>
+                            © {new Date().getFullYear()} EduGather Inc. All Rights Reserved.
+                        </p>
+                    </div>
+                </Container>
+            </footer>
+        </div>
     );
 };
 
-Home.getInitialProps = async () => {
-    try {
-        const response = await axios.get(`${API}/categories`);
-        return {
-            categories: response.data
-        };
-    } catch (error) {
-        console.error('Error fetching categories:', error);
-        return {
-            categories: []
-        };
-    }
-};
-
-export default Home;
+export default HomePage;

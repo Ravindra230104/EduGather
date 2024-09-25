@@ -7,7 +7,7 @@ import withUser from '../../withUser';
 import React from 'react';
 import { getCookie, isAuth } from '../../../helpers/auth';
 
-const Update = ({oldLink, token }) => {
+const Update = ({ oldLink, token }) => {
     const [state, setState] = useState({
         title: oldLink.title,
         url: oldLink.url,
@@ -44,21 +44,20 @@ const Update = ({oldLink, token }) => {
 
     const handleSubmit = async e => {
         e.preventDefault();
-
-        let dynamicUpdateUrl
-        if(isAuth() && isAuth().role === 'admin'){
-            dynamicUpdateUrl = `${API}/link/admin/${oldLink._id}`
-        }else{
-            dynamicUpdateUrl = `${API}/link/${oldLink._id}`
+        let dynamicUpdateUrl;
+        if (isAuth() && isAuth().role === 'admin') {
+            dynamicUpdateUrl = `${API}/link/admin/${oldLink._id}`;
+        } else {
+            dynamicUpdateUrl = `${API}/link/${oldLink._id}`;
         }
-    
+
         try {
             const response = await axios.put(dynamicUpdateUrl, { title, url, categories, type, medium }, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            setState({ ...state,success: `${response.data.title} is created`});
+            setState({ ...state, success: `${response.data.title} is updated` });
         } catch (error) {
             setState({ ...state, error: error.response?.data.error || 'An error occurred. Please try again.' });
         }
@@ -71,32 +70,6 @@ const Update = ({oldLink, token }) => {
     const handleMediumClick = e => {
         setState({ ...state, medium: e.target.value, success: '', error: '' });
     };
-
-    const showTypes = () => (
-        <div className='mb-3'>
-            <div className='form-check'>
-                <input type="radio" onClick={handleTypeClick} checked={type === 'free'} value="free" className='form-check-input' name="type" />
-                <label className='form-check-label ml-2'>Free</label>
-            </div>
-            <div className='form-check'>
-                <input type="radio" onClick={handleTypeClick} checked={type === 'paid'} value="paid" className='form-check-input' name="type" />
-                <label className='form-check-label ml-2'>Paid</label>
-            </div>
-        </div>
-    );
-
-    const showMedium = () => (
-        <div className='mb-3'>
-            <div className='form-check'>
-                <input type="radio" onClick={handleMediumClick} checked={medium === 'video'} value="video" className='form-check-input' name="medium" />
-                <label className='form-check-label ml-2'>Video</label>
-            </div>
-            <div className='form-check'>
-                <input type="radio" onClick={handleMediumClick} checked={medium === 'book'} value="book" className='form-check-input' name="medium" />
-                <label className='form-check-label ml-2'>Book</label>
-            </div>
-        </div>
-    );
 
     const handleToggle = c => () => {
         const clickedCategory = categories.indexOf(c);
@@ -111,100 +84,170 @@ const Update = ({oldLink, token }) => {
     };
 
     const showCategories = () => {
-        return loadedCategories && loadedCategories.map((c, i) => (
-            <li className='list-unstyled mb-2' key={c._id}>
-                <input type="checkbox" checked={categories.includes(c._id)} onChange={handleToggle(c._id)} className="form-check-input" style={{ marginRight: '10px' }} />
-                <label className="form-check-label" style={{ marginLeft: '5px' }}>{c.name}</label>
-            </li>
-        ));
+        return loadedCategories && loadedCategories.length > 0 ? (
+            <div className="form-check">
+                {loadedCategories.map(c => (
+                    <div key={c._id} className="category-item">
+                        <input
+                            type="checkbox"
+                            onChange={handleToggle(c._id)}
+                            id={`category-${c._id}`}
+                            className="form-check-input"
+                            checked={categories.includes(c._id)}
+                        />
+                        <label htmlFor={`category-${c._id}`} className="form-check-label">{c.name}</label>
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <p>No categories available</p>
+        );
     };
- 
 
     const submitLinkForm = () => (
-        <form onSubmit={handleSubmit} className='p-4 border rounded bg-black text-white shadow-sm'>
+        <form onSubmit={handleSubmit} className='form-container border-box'>
             <div className="form-group mb-3">
-                <label className="text-white">Title</label>
+                <label>Title</label>
                 <input
                     type="text"
-                    className='form-control bg-dark text-white placeholder-white'
+                    className='form-control'
                     onChange={handleTitleChange}
                     value={title}
                     placeholder='Enter title'
-                    style={{ 
-                        '--placeholder-color': 'white', // Custom property for placeholder color
-                    }}
                 />
-                <style jsx>{`
-                    .form-control::placeholder {
-                        color: var(--placeholder-color);
-                    }
-                `}</style>
             </div>
             <div className="form-group mb-3">
-                <label className="text-white">URL</label>
+                <label>URL</label>
                 <input
                     type="url"
-                    className='form-control bg-dark text-white placeholder-white'
+                    className='form-control'
                     onChange={handleURLChange}
                     value={url}
                     placeholder='Enter URL'
-                    style={{ 
-                        '--placeholder-color': 'white', // Custom property for placeholder color
-                    }}
                 />
-                <style jsx>{`
-                    .form-control::placeholder {
-                        color: var(--placeholder-color);
-                    }
-                `}</style>
             </div>
             <button disabled={!token} className="btn btn-primary" type="submit">
                 {isAuth() || token ? 'Update' : 'Login to update'}
             </button>
         </form>
     );
-    
-    
-    
+
+    const showTypes = () => (
+        <div className='form-section border-box'>
+            <label>Type</label>
+            <div className='form-check'>
+                <input type="radio" onClick={handleTypeClick} checked={type === 'free'} value="free" className='form-check-input' name="type" />
+                <label className='form-check-label ml-2'>Free</label>
+            </div>
+            <div className='form-check'>
+                <input type="radio" onClick={handleTypeClick} checked={type === 'paid'} value="paid" className='form-check-input' name="type" />
+                <label className='form-check-label ml-2'>Paid</label>
+            </div>
+        </div>
+    );
+
+    const showMedium = () => (
+        <div className='form-section border-box'>
+            <label>Medium</label>
+            <div className='form-check'>
+                <input type="radio" onClick={handleMediumClick} checked={medium === 'video'} value="video" className='form-check-input' name="medium" />
+                <label className='form-check-label ml-2'>Video</label>
+            </div>
+            <div className='form-check'>
+                <input type="radio" onClick={handleMediumClick} checked={medium === 'book'} value="book" className='form-check-input' name="medium" />
+                <label className='form-check-label ml-2'>Book</label>
+            </div>
+        </div>
+    );
+
     return (
         <Layout>
-            <div className="container mt-4">
-                <div className="row mb-4">
-                    <div className="col-md-12">
-                        <h1 className="display-4"  style={{ fontWeight: 'bold' }}>Update Link/URL</h1>
+            <div className="container mt-2">
+                <div className="row mb-4 text-white">
+                    <div className="col-md-12 text-white">
+                        <h1 className="text-white" style={{ color: 'white' }}>Update Link/URL</h1>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-4">
-                        <div className="form-group mb-4">
-                            <label className='text-muted'>Category</label>
-                            <ul style={{ maxHeight: '150px', overflowY: 'scroll', paddingLeft: '0' }}>
-                                {showCategories()}
-                            </ul>
+                        <div className="form-section border-box">
+                            <label className='text-dark'>Category</label>
+                            {showCategories()}
                         </div>
-                        <div className="form-group mb-4">
-                            <label className='text-muted'>Type</label>
+                        <div className="form-section border-box">
                             {showTypes()}
                         </div>
-                        <div className="form-group mb-4">
-                            <label className='text-muted'>Medium</label>
+                        <div className="form-section border-box">
                             {showMedium()}
                         </div>
                     </div>
                     <div className="col-md-8">
-                        {success && showSuccessMessage(success)}
-                        {error && showErrorMessage(error)}
-                        {submitLinkForm()}
+                        <div className="form-section border-box">
+                            {success && showSuccessMessage(success)}
+                            {error && showErrorMessage(error)}
+                            {submitLinkForm()}
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <style jsx>{`
+                .form-container {
+                    padding: 1rem;
+                    border: 1px solid #ddd;
+                    border-radius: 0.5rem;
+                    background: white;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+
+                .form-section {
+                    padding: 1rem;
+                    border: 1px solid #ddd;
+                    border-radius: 0.5rem;
+                    background: white;
+                    margin-bottom: 1rem;
+                }
+
+                .border-box {
+                    border: 1px solid #ddd;
+                    padding: 1rem;
+                    border-radius: 0.5rem;
+                    background: white;
+                }
+
+                .category-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                    gap: 10px;
+                }
+
+                .category-item {
+                    display: flex;
+                    align-items: center;
+                    padding: 10px;
+                    background: white;
+                    border: 1px solid #ddd;
+                    border-radius: 0.5rem;
+                    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    box-sizing: border-box;
+                }
+
+                .category-item input {
+                    margin-right: 10px;
+                    cursor: pointer;
+                }
+
+                .category-item label {
+                    cursor: pointer;
+                }
+            `}</style>
         </Layout>
     );
 };
 
-Update.getInitialProps = async ({ req, token, query }) => {
-    const response = await axios.post(`${API}/link/${query.id}`);
-    return {oldLink : response.data ,token}
+Update.getInitialProps = ({ req }) => {
+    const token = getCookie('token', req);
+    return { token };
 };
 
 export default withUser(Update);

@@ -101,7 +101,7 @@ const Create = ({ user, token }) => {
     const createCategoryForm = () => (
         <form onSubmit={handleSubmit}>
             <div className="form-group">
-                <label className="text-muted">Name</label>
+                <label className="text-black">Name</label>
                 <input
                     onChange={handleChange('name')}
                     value={name}
@@ -112,18 +112,18 @@ const Create = ({ user, token }) => {
                 />
             </div>
             <div className="form-group">
-                <label className="text-muted">Content</label>
+                <label className="text-black">Content</label>
                 <ReactQuill
                     value={content}
                     onChange={handleContent}
                     placeholder="Write content..."
                     theme="bubble"
                     className="pb-5 mb-3"
-                    style={{ border: '1px solid white', backgroundColor: 'white' }}
+                    style={{ border: '1px solid black', backgroundColor: 'white' }}
                 />
             </div>
             <div className="form-group">
-                <label className="text-muted">{imageUploadButtonName}</label>
+                <label className="text-black">{imageUploadButtonName}</label>
                 <input
                     onChange={handleImage}
                     type="file"
@@ -132,7 +132,7 @@ const Create = ({ user, token }) => {
                 />
             </div>
             <div className="form-group mt-3 mb-3">
-                <button className="btn btn-outline-warning w-100">{buttonText}</button>
+                <button className="btn btn-outline-success w-100">{buttonText}</button>
             </div>
         </form>
     );
@@ -142,8 +142,8 @@ const Create = ({ user, token }) => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                        <div className="card p-4" style={{ backgroundColor: 'black', border: '1px solid #dee2e6' }}>
-                            <h1 className="text-center mb-4 text-white">Create Category</h1>
+                        <div className="card p-4" style={{ backgroundColor: 'white', border: '1px solid #dee2e6' }}>
+                            <h1 className="text-center mb-4 text-black">Create Category</h1>
                             {success && showSuccessMessage(success)}
                             {error && showErrorMessage(error)}
                             {createCategoryForm()}

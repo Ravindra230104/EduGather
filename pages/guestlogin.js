@@ -74,8 +74,8 @@ const GuestLogin = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                        <div className="card p-4" style={{ backgroundColor: 'black', border: '1px solid #dee2e6' }}>
-                            <h1 className="text-center mb-4 text-white">Guest Login</h1>
+                        <div className="card p-4" style={{ backgroundColor: 'white', border: '1px solid #dee2e6' }}>
+                            <h1 className="text-center mb-4" style={{ color: 'black' }}>Guest Login</h1>
                             {success && showSuccessMessage(success)}
                             {error && showErrorMessage(error)}
                             {loginForm()}

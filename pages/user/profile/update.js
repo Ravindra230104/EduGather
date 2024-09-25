@@ -47,12 +47,24 @@ const Profile = ({ user, token }) => {
     };
 
     const showCategories = () => {
-        return loadedCategories && loadedCategories.map((c, i) => (
-            <li className='list-unstyled mb-2' key={c._id}>
-                <input type="checkbox" onChange={handleToggle(c._id)} checked={categories.includes(c._id)} className="form-check-input" style={{ marginRight: '10px' }} />
-                <label className="form-check-label text-white" style={{ marginLeft: '5px' }}>{c.name}</label>
-            </li>
-        ));
+        return loadedCategories && loadedCategories.length > 0 ? (
+            <div className="form-check">
+                {loadedCategories.map((c) => (
+                    <div key={c._id} className="category-item">
+                        <input
+                            type="checkbox"
+                            onChange={handleToggle(c._id)}
+                            id={`category-${c._id}`}
+                            className="form-check-input"
+                            checked={categories.includes(c._id)}
+                        />
+                        <label htmlFor={`category-${c._id}`} className="form-check-label">{c.name}</label>
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <p>No categories available</p>
+        );
     };
 
     const handleChange = (name) => (e) => {
@@ -126,7 +138,7 @@ const Profile = ({ user, token }) => {
                 </ul>
             </div>
             <div className="form-group mb-3">
-                <button className="btn btn-outline-warning w-100">{buttonText}</button>
+                <button className="btn btn-outline-success w-100">{buttonText}</button>
             </div>
         </form>
     );
@@ -136,8 +148,8 @@ const Profile = ({ user, token }) => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                        <div className="card p-4" style={{ backgroundColor: 'black', border: '1px solid #dee2e6' }}>
-                            <h1 className="text-center mb-4 text-white">Update Profile</h1>
+                        <div className="card p-4" style={{ backgroundColor: 'white', border: '1px solid #dee2e6' }}>
+                            <h1 className="text-center mb-4 text-black">Update Profile</h1>
                             {success && showSuccessMessage(success)}
                             {error && showErrorMessage(error)}
                             {updateForm()}

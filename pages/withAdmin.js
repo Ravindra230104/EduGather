@@ -15,7 +15,7 @@ const withAdmin = Page => {
             try {
                 const response = await axios.get(`${API}/admin`, {
                     headers: {
-                        Authorization: `Bearer ${token}`,
+                        Authorization: Bearer `${token}`,
                         'Content-Type': 'application/json'
                     }
                 });

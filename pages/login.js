@@ -1,11 +1,11 @@
 import Layout from '../components/Layout';
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import axios from 'axios';
 import { showSuccessMessage, showErrorMessage } from '../helpers/alerts';
 import { API } from '../config';
-import {authenticate, isAuth} from '../helpers/auth'
+import { authenticate, isAuth } from '../helpers/auth';
 
 const Login = () => {
     const [state, setState] = useState({
@@ -18,7 +18,7 @@ const Login = () => {
 
     useEffect(() => {
         isAuth() && Router.push('/');
-    },[]);
+    }, []);
 
     const { email, password, error, success, buttonText } = state;
 
@@ -87,9 +87,8 @@ const Login = () => {
             <div className="container">
                 <div className="row">
                     <div className="col-md-6 offset-md-3">
-                        <div className="card p-4" style={{ backgroundColor: 'black', border: '1px solid #dee2e6' }}>
-                            <h1 className="text-center mb-4 text-white">Login</h1>
-                            {/* {JSON.stringify(isAuth())} */}
+                        <div className="card p-4" style={{ backgroundColor: 'white', border: '1px solid #dee2e6' }}>
+                            <h1 className="text-center mb-4 text-black">Login</h1>
                             {success && showSuccessMessage(success)}
                             {error && showErrorMessage(error)}
                             {loginForm()}

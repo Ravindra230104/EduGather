@@ -65,32 +65,6 @@ const Create = ({ token }) => {
         setState({ ...state, medium: e.target.value, success: '', error: '' });
     };
 
-    const showTypes = () => (
-        <div className='mb-3'>
-            <div className='form-check'>
-                <input type="radio" onClick={handleTypeClick} checked={type === 'free'} value="free" className='form-check-input' name="type" />
-                <label className='form-check-label ml-2'>Free</label>
-            </div>
-            <div className='form-check'>
-                <input type="radio" onClick={handleTypeClick} checked={type === 'paid'} value="paid" className='form-check-input' name="type" />
-                <label className='form-check-label ml-2'>Paid</label>
-            </div>
-        </div>
-    );
-
-    const showMedium = () => (
-        <div className='mb-3'>
-            <div className='form-check'>
-                <input type="radio" onClick={handleMediumClick} checked={medium === 'video'} value="video" className='form-check-input' name="medium" />
-                <label className='form-check-label ml-2'>Video</label>
-            </div>
-            <div className='form-check'>
-                <input type="radio" onClick={handleMediumClick} checked={medium === 'book'} value="book" className='form-check-input' name="medium" />
-                <label className='form-check-label ml-2'>Book</label>
-            </div>
-        </div>
-    );
-
     const handleToggle = c => () => {
         const clickedCategory = categories.indexOf(c);
         const all = [...categories];
@@ -104,31 +78,43 @@ const Create = ({ token }) => {
     };
 
     const showCategories = () => {
-        return loadedCategories && loadedCategories.map((c, i) => (
-            <li className='list-unstyled mb-2' key={c._id}>
-                <input type="checkbox" onChange={handleToggle(c._id)} className="form-check-input" style={{ marginRight: '10px' }} />
-                <label className="form-check-label" style={{ marginLeft: '5px' }}>{c.name}</label>
-            </li>
-        ));
+        return loadedCategories && loadedCategories.length > 0 ? (
+            <div className="form-check">
+                {loadedCategories.map((c) => (
+                    <div key={c._id} className="category-item">
+                        <input
+                            type="checkbox"
+                            onChange={handleToggle(c._id)}
+                            id={`category-${c._id}`}
+                            className="form-check-input"
+                            checked={categories.includes(c._id)}
+                        />
+                        <label htmlFor={`category-${c._id}`} className="form-check-label">{c.name}</label>
+                    </div>
+                ))}
+            </div>
+        ) : (
+            <p>No categories available</p>
+        );
     };
 
     const submitLinkForm = () => (
-        <form onSubmit={handleSubmit} className='p-4 border rounded bg-dark text-white shadow-sm'>
+        <form onSubmit={handleSubmit} className='form-container border-box'>
             <div className="form-group mb-3">
-                <label className="text-white">Title</label>
+                <label>Title</label>
                 <input
                     type="text"
-                    className='form-control   '
+                    className='form-control'
                     onChange={handleTitleChange}
                     value={title}
                     placeholder='Enter title'
                 />
             </div>
             <div className="form-group mb-3">
-                <label className="text-white">URL</label>
+                <label>URL</label>
                 <input
                     type="url"
-                    className='form-control  '
+                    className='form-control'
                     onChange={handleURLChange}
                     value={url}
                     placeholder='Enter URL'
@@ -139,39 +125,117 @@ const Create = ({ token }) => {
             </button>
         </form>
     );
-    
+
+    const showTypes = () => (
+        <div className='form-section border-box'>
+            <label>Type</label>
+            <div className='form-check'>
+                <input type="radio" onClick={handleTypeClick} checked={type === 'free'} value="free" className='form-check-input' name="type" />
+                <label className='form-check-label ml-2'>Free</label>
+            </div>
+            <div className='form-check'>
+                <input type="radio" onClick={handleTypeClick} checked={type === 'paid'} value="paid" className='form-check-input' name="type" />
+                <label className='form-check-label ml-2'>Paid</label>
+            </div>
+        </div>
+    );
+
+    const showMedium = () => (
+        <div className='form-section border-box'>
+            <label>Medium</label>
+            <div className='form-check'>
+                <input type="radio" onClick={handleMediumClick} checked={medium === 'video'} value="video" className='form-check-input' name="medium" />
+                <label className='form-check-label ml-2'>Video</label>
+            </div>
+            <div className='form-check'>
+                <input type="radio" onClick={handleMediumClick} checked={medium === 'book'} value="book" className='form-check-input' name="medium" />
+                <label className='form-check-label ml-2'>Book</label>
+            </div>
+        </div>
+    );
+
     return (
         <Layout>
-            <div className="container mt-4">
-                <div className="row mb-4">
-                    <div className="col-md-12">
-                        <h1 className="display-4" style={{ fontWeight: 'bold' }}>Submit Link/URL</h1>
-                    </div>
+            <div className="container mt-2">
+                <div className="row mb-4 text-white">
+                <div className="col-md-12 text-white">
+                    <h1 className="text-white" style={{ color: 'white' }}>Submit Link/URL</h1>
+                </div>
+
                 </div>
                 <div className="row">
                     <div className="col-md-4">
-                        <div className="form-group mb-4">
-                            <label className='text-muted'>Category</label>
-                            <ul style={{ maxHeight: '150px', overflowY: 'scroll', paddingLeft: '0' }}>
-                                {showCategories()}
-                            </ul>
+                        <div className="form-section border-box">
+                            <label className='text-dark'>Category</label>
+                            {showCategories()}
                         </div>
-                        <div className="form-group mb-4">
-                            <label className='text-muted'>Type</label>
+                        <div className="form-section border-box">
                             {showTypes()}
                         </div>
-                        <div className="form-group mb-4">
-                            <label className='text-muted'>Medium</label>
+                        <div className="form-section border-box">
                             {showMedium()}
                         </div>
                     </div>
                     <div className="col-md-8">
-                        {success && showSuccessMessage(success)}
-                        {error && showErrorMessage(error)}
-                        {submitLinkForm()}
+                        <div className="form-section border-box">
+                            {success && showSuccessMessage(success)}
+                            {error && showErrorMessage(error)}
+                            {submitLinkForm()}
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <style jsx>{`
+    .form-container {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        background: white;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-section {
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        background: white;
+        margin-bottom: 1rem;
+    }
+
+    .border-box {
+        border: 1px solid #ddd;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        background: white;
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+    }
+    
+    .category-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+    }
+
+    .category-item input {
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .category-item label {
+        cursor: pointer;
+    }
+`}</style>
         </Layout>
     );
 };

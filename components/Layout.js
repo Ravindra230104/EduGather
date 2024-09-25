@@ -32,16 +32,17 @@ const Layout = ({ children }) => {
     );
 
     const nav = () => (
-        <ul className="nav nav-tabs bg-warning">
-            <li className="nav-item">
-                <Link href="/" legacyBehavior>
-                    <a className="nav-link text-dark">Home</a>
-                </Link>
-            </li>
+        <ul className="nav nav-tabs" style={{ background: 'linear-gradient(to right, #4b79a1, #283e51)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <li className="nav-item">
+            <Link href="/" legacyBehavior>
+                <a className="nav-link text-white">Home</a>
+            </Link>
+        </li>
 
+        <div className="d-flex ml-auto">
             <li className="nav-item">
                 <Link href="/user/link/create" legacyBehavior>
-                    <a className="nav-link text-dark btn btn-success" style={{ borderRadius: '0px' }}>
+                    <a className="nav-link btn " style={{ color: 'white', borderRadius: '0px' }}>
                         Submit a link
                     </a>
                 </Link>
@@ -51,53 +52,66 @@ const Layout = ({ children }) => {
                 <>
                     <li className="nav-item">
                         <Link href="/login" legacyBehavior>
-                            <a className="nav-link text-dark">Login</a>
+                            <a className="nav-link text-white">Login</a>
                         </Link>
                     </li>
                     <li className="nav-item">
                         <Link href="/register" legacyBehavior>
-                            <a className="nav-link text-dark">Register</a>
+                            <a className="nav-link text-white">Register</a>
                         </Link>
                     </li>
                     <li className="nav-item">
                         <Link href="/guestlogin" legacyBehavior>
-                            <a className="nav-link text-dark">Guest Login</a>
+                            <a className="nav-link text-white">Guest Login</a>
                         </Link>
                     </li>
                 </>
             )}
 
             {auth && auth.role === 'admin' && (
-                <li className="nav-item ml-auto">
+                <li className="nav-item">
                     <Link href="/admin" legacyBehavior>
-                        <a className="nav-link text-dark">{auth.name}</a>
+                        <a className="nav-link text-white">{auth.name}</a>
                     </Link>
                 </li>
             )}
 
-            {auth && auth.role === 'subscriber'  && (
-                <li className="nav-item ml-auto">
+            {auth && auth.role === 'subscriber' && (
+                <li className="nav-item">
                     <Link href="/user" legacyBehavior>
-                        <a className="nav-link text-dark">{auth.name}</a>
+                        <a className="nav-link text-white">{auth.name}</a>
                     </Link>
                 </li>
             )}
 
             {auth && (
                 <li className="nav-item">
-                    <a onClick={logout} className="nav-link text-dark">
+                    <a onClick={logout} className="nav-link text-white">
                         Logout
                     </a>
                 </li>
             )}
-        </ul>
+        </div>
+    </ul>
     );
 
     return (
         <>
             <Head>{head()}</Head>
-            {nav()}
-            <div className="container pt-5 pb-5">{children}</div>
+            <div style={{ 
+                // background: 'linear-gradient(to right, #20002c, ##cbb4d4)',   
+                background: 'linear-gradient(to right,  #000428, #004e92)',
+                minHeight: '100vh',  // Ensures the gradient covers the full viewport
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
+                {nav()}
+                <div className="container pt-5 pb-5" style={{ 
+                    //  background: 'linear-gradient(to right,  #159957, #155799)',    
+                }}>
+                    {children}
+                </div>
+            </div>
         </>
     );
 };

@@ -74,7 +74,7 @@ const Read = ({user, token}) => {
     return(
         <Layout>
             <div className="row">
-                <div className="col">
+                <div className="col text-white">
                     <h1>List of categories</h1>
                     <br/>
                 </div>
