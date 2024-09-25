@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Container } from 'react-bootstrap';
-import Counter from './counter.js'; // Adjust the import path as needed
+import Counter from './counter.js'
 
 const HomePage = () => {
     return (
