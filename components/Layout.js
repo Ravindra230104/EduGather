@@ -39,7 +39,17 @@ const Layout = ({ children }) => {
             </Link>
         </li>
 
+
         <div className="d-flex ml-auto">
+
+            {auth && auth.role === 'subscriber' && (
+                    <li className="nav-item">
+                        <Link href="/user/chat" legacyBehavior>
+                            <a className="nav-link text-white">Discussions</a>
+                        </Link>
+                    </li>
+            )}
+
             <li className="nav-item">
                 <Link href="/user/link/create" legacyBehavior>
                     <a className="nav-link btn " style={{ color: 'white', borderRadius: '0px' }}>

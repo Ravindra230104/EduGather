@@ -8,6 +8,7 @@ import renderHTML from 'react-render-html';
 import moment from 'moment';
 import InfiniteScroll from 'react-infinite-scroller';
 import Head from 'next/head'
+import Link from 'next/link';
 
 const Links = ({ query, category, links, totalLinks, linksLimit, linkSkip }) => {
     const [allLinks, setAllLinks] = useState(links);
@@ -79,53 +80,71 @@ const Links = ({ query, category, links, totalLinks, linksLimit, linkSkip }) => 
 
     const listOfPopularLinks = () => (
         popular.map((l, i) => (
-            <div key={i} className="row alert alert-secondary mb-4 p-3 border rounded shadow-sm">
-                <div className="col-md-8" onClick={() => handlePopularClick(l._id)}>
-                    <a href={l.url} target="_blank" rel="noopener noreferrer" style={{ color: 'red', textDecoration: 'none' }}>
-                        <h5 className="pt-2 font-weight-bold" style={{ color: 'blue' }}>{l.title}</h5>
-                        <h6 className="pt-2" style={{ fontSize: '14px' }}>{l.url}</h6>
-                    </a>
+            <div key={i} className="row mb-4 p-3 border rounded shadow-sm" style={{ background: 'linear-gradient(to right, #360033, #0b8793)' }}>
+                <div className="col-md-8 d-flex flex-column" onClick={() => handlePopularClick(l._id)}>
+                    <h5 className="pt-2 font-weight-bold text-warning">{l.title}</h5>
+                    <button 
+                        className="btn btn-light btn-sm mt-2" 
+                        onClick={(e) => {
+                            e.stopPropagation(); // Prevent triggering the onClick of the parent div
+                            window.open(l.url, '_blank', 'noopener noreferrer');
+                        }}
+                        style={{ color: 'blue', textDecoration: 'none' }}
+                    >
+                        Read Here
+                    </button>
                 </div>
-                <div className="col-md-4 pt-2">
-                    <span className="text-black">{moment(l.createdAt).fromNow()} by {l.postedBy.name}</span>
-                    <br />
-                    <span className="badge text-black pull-right">{l.clicks} clicks</span>
-                </div>
-                <div className="col-md-12 mt-2">
-                    <span className="badge bg-light text-dark me-2">{l.type}</span>
-                    <span className="badge bg-light text-dark me-2">{l.medium}</span>
-                    {l.categories.map((c, i) => (
-                        <span key={i} className="badge bg-success text-white me-2">{c.name}</span>
-                    ))}
+                <div className="col-md-4 text-end d-flex flex-column justify-content-between">
+                    <div>
+                        <span className="text-white small">{moment(l.createdAt).fromNow()}</span>
+                        <br />
+                        <span className="badge bg-info text-dark">{l.clicks} clicks</span>
+                    </div>
+                    <div className="d-flex align-items-center mt-2">
+                        <span className="badge bg-primary me-2" style={{ marginRight: '10px' }}>{l.type}</span>
+                        <span className="badge bg-white me-2">{l.medium}</span>
+                        {l.categories.map((c, i) => (
+                            <span key={i} className="badge bg-success me-2">{c.name}</span>
+                        ))}
+                    </div>
                 </div>
             </div>
         ))
     );
+    
+    
+    
 
-    const listOfLinks = () => (
+    const listOfLinks = () =>
         allLinks.map((l, i) => (
-            <div key={i} className="row alert alert-primary mb-4 p-3 border rounded shadow-sm">
+            <div key={i} className="row mb-4 p-3 border rounded shadow-sm" style={{ background: 'linear-gradient(to right, #360033, #0b8793)' }}>
                 <div className="col-md-8" onClick={() => handleClick(l._id)}>
-                    <a href={l.url} target="_blank" rel="noopener noreferrer" style={{ color: 'red', textDecoration: 'none' }}>
-                        <h5 className="pt-2 font-weight-bold" style={{ color: 'blue' }}>{l.title}</h5>
-                        <h6 className="pt-2" style={{ fontSize: '14px' }}>{l.url}</h6>
+                    <a href={l.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
+                        <h5 className="pt-2 font-weight-bold text-primary">{l.title}</h5>
+                        <p className="text-white small">{l.url}</p>
                     </a>
                 </div>
-                <div className="col-md-4 pt-2">
-                    <span className="text-muted">{moment(l.createdAt).fromNow()} by {l.postedBy.name}</span>
+                <div className="col-md-4 text-end">
+                    <span className="text-white small">{moment(l.createdAt).fromNow()} by {l.postedBy.name}</span>
                     <br />
-                    <span className="badge text-secondary pull-right">{l.clicks} clicks</span>
+                    <span className="badge bg-info text-dark">{l.clicks} clicks</span>
                 </div>
-                <div className="col-md-12 mt-2">
-                    <span className="badge bg-light text-dark me-2">{l.type}</span>
-                    <span className="badge bg-light text-dark me-2">{l.medium}</span>
+                <div className="d-flex align-items-center mt-2">
+                    <span className="badge bg-secondary" style={{ marginRight: '10px' }}>{l.type}</span>
+                    <span className="badge bg-secondary" style={{ marginRight: '10px' }}>{l.medium}</span>
                     {l.categories.map((c, i) => (
-                        <span key={i} className="badge bg-success text-white me-2">{c.name}</span>
+                        <span key={i} className="badge bg-success" style={{ marginRight: '10px' }}>{c.name}</span>
                     ))}
+                    <Link legacyBehavior href={`/user/link/${l.slug}`}>
+                        <span onClick={(e) => confirmDelete(e, l._id)} className='badge bg-danger' style={{ cursor: 'pointer', marginRight: '10px' }}>Delete</span>
+                    </Link>
+                    <Link legacyBehavior href={`/user/link/${l.slug}`}>
+                        <span className='badge bg-warning text-dark' style={{ cursor: 'pointer' }}>Update</span>
+                    </Link>
                 </div>
+
             </div>
-        ))
-    );
+        ));
 
     const loadMore = async () => {
         let toSkip = skip + limit;
@@ -155,8 +174,8 @@ const Links = ({ query, category, links, totalLinks, linksLimit, linkSkip }) => 
             <div className="container mt-4">
                 <div className="row">
                     <div className="col-md-8">
-                        <h1 className="display-4 font-weight-bold mb-3">{category.name} - URL/Links</h1>
-                        <div className="lead alert alert-secondary pt-4">{renderHTML(category.content || '')}</div>
+                        <h1 className="display-4 font-weight-bold mb-3 text-white">{category.name} - URL/Links</h1>
+                        <div className="lead alert alert-secondary pt-4 text-error">{renderHTML(category.content || '')}</div>
                     </div>
                     <div className="col-md-4">
                         <img
@@ -172,7 +191,7 @@ const Links = ({ query, category, links, totalLinks, linksLimit, linkSkip }) => 
                         {listOfLinks()}
                     </div>
                     <div className="col-md-4">
-                        <h2 className='lead'>Most Popular in {category.name}</h2>
+                        <h2 className='lead text-white'>Most Popular in {category.name}</h2>
                         <div className="p-3">
                             <p>{listOfPopularLinks()}</p>
                         </div>

@@ -17,25 +17,28 @@ const Admin = ({ user }) => {
         <Layout>
             <h1 className="display-4 font-weight-bold mb-4 text-center text-white">Admin Dashboard</h1>
 
-             <div className="row">
+            <div className="row">
                 {/* Left Sidebar */}
                 <div className="col-md-4">
                     <div className="list-group mb-4 sidebar">
                         <Link href="/admin/category/create" legacyBehavior>
-                            <a className="list-group-item link-item">Create Category</a>
+                            <span className="list-group-item link-item">Create Category</span>
                         </Link>
                         <Link href="/admin/category/read" legacyBehavior>
-                            <a className="list-group-item link-item">All Categories</a>
+                            <span className="list-group-item link-item">All Categories</span>
                         </Link>
                         <Link href="/admin/link/read" legacyBehavior>
-                            <a className="list-group-item link-item">All Links</a>
+                            <span className="list-group-item link-item">All Links</span>
                         </Link>
                         <Link href="/user/profile/update" legacyBehavior>
-                            <a className="list-group-item link-item">Update Profile</a>
+                            <span className="list-group-item link-item">Update Profile</span>
+                        </Link>
+                        <Link href="/admin/link/approval" legacyBehavior>
+                            <span className="list-group-item link-item">Link Approval</span>
                         </Link>
                     </div>
                 </div>
-                
+
                 {/* Right Content */}
                 <div className="col-md-8">
                     <div className="row mb-4 justify-content-center">
@@ -111,24 +114,22 @@ const Admin = ({ user }) => {
                     color: #2980b9;
                 }
                 .recent-activities {
-                    
                     border-radius: 8px;
-                    padding: 10px; /* Add padding */
-                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add shadow for depth */
+                    padding: 10px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     background-color: #7695FF;
-
                 }
                 .activity-list {
-                    margin: 0; /* Remove default margin */
+                    margin: 0;
                 }
                 .activity-item {
-                    border: none; /* Remove border */
-                    background-color: transparent; /* Transparent background */
-                    padding: 10px; /* Add padding */
-                    transition: background-color 0.3s; /* Transition for hover effect */
+                    border: none;
+                    background-color: transparent;
+                    padding: 10px;
+                    transition: background-color 0.3s;
                 }
                 .activity-item:hover {
-                    background-color: #e7e9ec; /* Change background on hover */
+                    background-color: #e7e9ec;
                 }
             `}</style>
         </Layout>
